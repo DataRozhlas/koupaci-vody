@@ -7,9 +7,17 @@ proj = ->
 
 data = for id, datum of ig.data.mereni
   datum.latLng = L.latLng (proj [datum.x, datum.y]).reverse!
+  for evaluation in datum.evaluations
+    [d, m, y] = evaluation.date.split "." .map parseInt _, 10
+    evaluation.dateString = evaluation.date
+    evaluation.date = new Date!
+      ..setTime 12 * 3600 * 1e3
+      ..setDate d
+      ..setMonth m + 1
+      ..setFullYear y
   datum
 
-
+console.log data.0
 percentage = ->
   decimals = if it < 0.01 then 1 else 0
   "#{window.ig.utils.formatNumber it * 100, decimals}&nbsp;%"
@@ -22,14 +30,13 @@ map = L.map do
   * mapElement.node!
   * minZoom: 7,
     maxZoom: 12,
-    zoom: 7,
+    zoom: 8,
     center: [49.78, 15.5]
     maxBounds: [[48.3,11.6], [51.3,19.1]]
 
 baseLayer = L.tileLayer do
   * "https://samizdat.cz/tiles/ton_b1/{z}/{x}/{y}.png"
   * zIndex: 1
-    opacity: 0.8
     attribution: 'CC BY-NC-SA <a href="http://rozhlas.cz">Rozhlas.cz</a>. Data <a href="https://www.czso.cz/" target="_blank">ČSÚ</a>, mapová data &copy; <a target="_blank" href="http://osm.org">OpenStreetMap</a>, podkres <a target="_blank" href="http://stamen.com">Stamen</a>, <a target="_blank" href="https://samizdat.cz">Samizdat</a>'
 
 labelLayer = L.tileLayer do
@@ -41,6 +48,9 @@ map
   ..addLayer baseLayer
   ..addLayer labelLayer
 
-for datum in data
+data.forEach (datum) ->
   marker = L.marker datum.latLng
     ..addTo map
+    ..on \click -> infobar.display datum
+
+infobar = new ig.InfoBar container

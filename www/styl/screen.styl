@@ -4,10 +4,19 @@
 
 .ig
   @import basics
+  @import InfoBar
 .ig
+  overflow hidden
   .map
     position absolute
     top 0px
     left 0px
     bottom 0px
     width 100%
+    transform translate(0, 0px)
+    transition transform 0.2s
+  &.info-bar-active
+    .map
+      transform translate(0, -200px)
+    .info-bar
+      transform translate(0, 0)
