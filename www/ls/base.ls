@@ -40,7 +40,6 @@ d = new Date!
   ..setMonth 5
   ..setDate 0
 t1 = d.getTime!
-console.log data.0
 percentage = ->
   decimals = if it < 0.01 then 1 else 0
   "#{window.ig.utils.formatNumber it * 100, decimals}&nbsp;%"
