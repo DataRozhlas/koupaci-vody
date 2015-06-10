@@ -1,7 +1,7 @@
 @import colors
 @import prefixes
 @import 'components/triangle'
-
+infobarHeight = 150px
 .ig
   @import basics
   @import InfoBar
@@ -17,6 +17,6 @@
     transition transform 0.2s
   &.info-bar-active
     .map
-      transform translate(0, -200px)
+      transform translate(0, infobarHeight * -1)
     .info-bar
       transform translate(0, 0)
