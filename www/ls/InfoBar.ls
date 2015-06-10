@@ -13,6 +13,7 @@ months =
     start: 122 * day
 class ig.InfoBar
   (@parentElement) ->
+    @graphTip = new ig.GraphTip @parentElement
     @element = @parentElement.append \div
       ..attr \class \info-bar
     @header = @element.append \h3
@@ -32,6 +33,10 @@ class ig.InfoBar
     @scale = d3.scale.linear!
       ..domain [0 122 * 86400 * 1e3]
       ..range [0 148]
+    @voronoi = d3.geom.voronoi!
+      ..x ~> @scale it.relativeTime
+      ..y ~> 2
+      ..clipExtent [[0, 0], [150, 70]]
 
   display: (data) ->
     @header.html data.title
@@ -39,6 +44,9 @@ class ig.InfoBar
     @graphsSlider.html ''
     @graphsSlider.style \width "#{data.years.length * 170 + 30}px"
     @graphsContainer.node!scrollLeft = data.years.length * 160
+    # voronoiPolygons = voronoi dataPoints
+    #   .filter -> it
+    showTip = @~showTip
 
     @graphsSlider.selectAll \svg.graph .data data.years .enter!append \svg
       ..attr \class \graph
@@ -72,7 +80,30 @@ class ig.InfoBar
           ..attr \y 32
           ..attr \text-anchor \middle
           ..text -> it.year
+      ..append \g
+        ..attr \class \voronoi
+        ..selectAll \path .data (~> @voronoi it.evaluations .filter -> it && it.length) .enter!append \path
+          ..attr \d -> polygon it
+          ..on \mouseover -> showTip it.point, @
+
+  showTip: (point, element) ->
+    {left:svgLeft, top} = ig.utils.offset element.parentNode.parentNode
+    svgLeft -= @graphsContainer.node!scrollLeft
+    pointLeft = @scale point.relativeTime
+    @graphTip.display svgLeft + pointLeft, top, "Měření z #{toHumanDate point.date}:<br>
+    Hodnocení #{point.result} – #{resultNames[point.result]}"
+    # console.log it.point
+
 
   hide: ->
     @parentElement.classed \info-bar-active no
     @graphsSlider.html ''
+
+polygon = ->
+  "M#{it.join "L"}Z"
+
+monthNames = <[ledna února března dubna května června července srpna září října listopadu prosince]>
+resultNames = ["", "Voda vhodná ke koupání", "Voda vhodná ke koupání s mírně zhoršenými vlastnostmi", "Zhoršená jakost vody", "Voda nevhodná ke koupání", "Voda nebezpečná ke koupání – zákaz koupání"]
+toHumanDate = (date) ->
+  "#{date.getDate!}. #{monthNames[date.getMonth!]} #{date.getFullYear!}"
+
