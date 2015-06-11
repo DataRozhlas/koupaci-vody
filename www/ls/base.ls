@@ -50,11 +50,11 @@ mapElement = container.append \div
 
 map = L.map do
   * mapElement.node!
-  * minZoom: 7,
-    maxZoom: 12,
-    zoom: 7,
+  * minZoom: 7
+    maxZoom: 12
+    zoom: 7
     center: [49.78, 15.5]
-    maxBounds: [[48.3,11.6], [51.3,19.1]]
+    maxBounds: [[48.3, 11.6], [51.3, 19.1]]
 
 baseLayer = L.tileLayer do
   * "https://samizdat.cz/tiles/ton_b1/{z}/{x}/{y}.png"
