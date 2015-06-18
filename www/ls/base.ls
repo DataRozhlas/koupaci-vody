@@ -75,7 +75,6 @@ map
   ..addLayer baseLayer
   ..addLayer labelLayer
 
-console.log d3.extent data.map (.ratio)
 markerColorScale = d3.scale.linear!
   ..domain [0 0.25 0.5 0.75 1]
   ..range <[#d73027 #f46d43 #fdae61 #a6d96a #1a9641]>
