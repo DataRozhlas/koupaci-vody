@@ -21,13 +21,18 @@ data = for id, datum of ig.data.mereni
     ..setTime 0
     ..setMonth 5
     ..setDate 1
+  goodResults = 0
+  allResults = 0
   datum.years = for year, evaluations of yearsAssoc
     year = parseInt year, 10
     d.setFullYear year
     timeStart = d.getTime!
     for evaluation in evaluations
       evaluation.relativeTime = evaluation.date.getTime! - timeStart
+      allResults++
+      goodResults++ if evaluation.result <= 2
     {year, evaluations, timeStart}
+  datum.ratio = (goodResults / allResults) || 1
   datum
 d = new Date!
   ..setTime 0
@@ -70,8 +75,17 @@ map
   ..addLayer baseLayer
   ..addLayer labelLayer
 
+console.log d3.extent data.map (.ratio)
+markerColorScale = d3.scale.linear!
+  ..domain [0 0.25 0.5 0.75 1]
+  ..range <[#d73027 #f46d43 #fdae61 #a6d96a #1a9641]>
 data.forEach (datum) ->
-  marker = L.marker datum.latLng
+  color = markerColorScale datum.ratio
+  radius = 7
+  icon = L.divIcon do
+    html: "<div style='background-color: #color;line-height:#{radius}px'></div>"
+    iconSize: [radius + 10, radius + 10]
+  marker = L.marker datum.latLng, {icon}
     ..addTo map
     ..on \click -> infobar.display datum
 
