@@ -92,3 +92,15 @@ infobar = new ig.InfoBar container
 geocoder = new ig.Geocoder mapElement.node!
   ..on \latLng (latlng) ->
     map.setView latlng, 12
+
+legend = mapElement.append \div
+  ..attr \class \legend
+  ..append \ul
+    ..selectAll \li .data markerColorScale.range!reverse! .enter!append \li
+      ..style \background-color -> it
+  ..append \span
+    ..attr \class \popisky
+    ..append \span
+      ..html "většinou vhodné ke koupání"
+    ..append \span
+      ..html "často nevhodné"
