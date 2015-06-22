@@ -85,6 +85,8 @@ class ig.InfoBar
         ..selectAll \path .data (~> @voronoi it.evaluations .filter -> it && it.length) .enter!append \path
           ..attr \d -> polygon it
           ..on \mouseover -> showTip it.point, @
+          ..on \touchstart -> showTip it.point, @
+          ..on \mouseout @graphTip~hide
 
   showTip: (point, element) ->
     {left:svgLeft, top} = ig.utils.offset element.parentNode.parentNode
