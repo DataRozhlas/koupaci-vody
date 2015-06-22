@@ -89,3 +89,6 @@ data.forEach (datum) ->
     ..on \click -> infobar.display datum
 
 infobar = new ig.InfoBar container
+geocoder = new ig.Geocoder mapElement.node!
+  ..on \latLng (latlng) ->
+    map.setView latlng, 12
