@@ -29,7 +29,7 @@ class ig.InfoBar
       ..attr \class \graphs-slider
     @color = d3.scale.ordinal!
       ..domain [5 4 3 2 1]
-      ..range <[#d73027 #f46d43 #fdae61 #a6d96a #1a9641]>
+      ..range ['rgb(215,25,28)','rgb(253,174,97)','rgb(254,224,144)','rgb(171,217,233)','rgb(44,123,182)']
     @scale = d3.scale.linear!
       ..domain [0 122 * 86400 * 1e3]
       ..range [0 148]

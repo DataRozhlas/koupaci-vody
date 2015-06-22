@@ -77,7 +77,7 @@ map
 
 markerColorScale = d3.scale.linear!
   ..domain [0 0.25 0.5 0.75 1]
-  ..range <[#d73027 #f46d43 #fdae61 #a6d96a #1a9641]>
+  ..range ['rgb(215,25,28)','rgb(253,174,97)','rgb(255,255,191)','rgb(171,217,233)','rgb(44,123,182)']
 data.forEach (datum) ->
   color = markerColorScale datum.ratio
   radius = 7
