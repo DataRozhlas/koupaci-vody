@@ -13,7 +13,7 @@ data = for id, datum of ig.data.mereni
     evaluation.date = new Date!
       ..setTime 12 * 3600 * 1e3
       ..setDate d
-      ..setMonth m + 1
+      ..setMonth m - 1
       ..setFullYear y
     yearsAssoc[y] ?= []
     yearsAssoc[y].push evaluation
@@ -34,6 +34,7 @@ data = for id, datum of ig.data.mereni
     {year, evaluations, timeStart}
   datum.ratio = (goodResults / allResults) || 1
   datum
+
 d = new Date!
   ..setTime 0
   ..setMonth 5
